@@ -27,7 +27,7 @@ public class Main {
             System.out.print("Seleccione una opción: ");
 
             opcion = (char) System.in.read();
-            System.in.skip(System.in.available()); // limpia el Enter que quedó en el buffer
+            System.in.skip(System.in.available());
 
             switch (opcion) {
                 case '1':
@@ -151,32 +151,32 @@ public class Main {
                 case '4':
                     System.out.println("\n--- MODIFICAR MATERIAL ---");
 
-                    // Paso 1: Pedir el código del material
+                    // segun lo que me dijeron aqui lo que hace es Pedir el código del material
                     System.out.print("Ingrese el código del material a modificar: ");
                     String codigoMod = scanner.nextLine().trim();
 
-                    // Paso 2: Buscar el material y guardarlo
+                    //  segun lo que me dijeron aqui lo que hace es  Buscar el material y guardarlo
                     Formato materialAModificar = gestion.buscarMaterial(codigoMod);
 
-                    // Paso 3: Validar si es null
+                    //  segun lo que me dijeron aqui lo que hace es  Validar si es null
                     if (materialAModificar == null) {
                         System.out.println("No se encontró ningún material con el código: " + codigoMod);
                     } else {
-                        // Paso 4: Si existe, verificar el tipo con instanceof y pedir nuevos datos
+                        //  segun lo que me dijeron aqui lo que hace es  Si existe, verificar el tipo con instanceof y pedir nuevos datos
                         System.out.println("Material encontrado: " + materialAModificar.getTitulo());
                         System.out.println("Ingrese los nuevos datos:");
 
-                        // Modificamos datos generales que comparten todos (heredados de Formato)
+
                         System.out.print("Nuevo Título: ");
                         materialAModificar.setTitulo(scanner.nextLine());
 
-                        // CORRECCIÓN APLICADA: setTotaldeunidades en vez de setUnidadesDisponibles
+
                         System.out.print("Nuevas Unidades Disponibles: ");
                         materialAModificar.setTotaldeunidades(Integer.parseInt(scanner.nextLine()));
 
-                        // Verificamos el tipo específico para los atributos propios
+                        //  segun lo que me dijeron aqui lo que hace es Verificamos el tipo específico para los atributos propios
                         if (materialAModificar instanceof Libro) {
-                            Libro lib = (Libro) materialAModificar; // Casting a Libro
+                            Libro lib = (Libro) materialAModificar;
 
                             System.out.print("Nuevo Autor: ");
                             lib.setAutor(scanner.nextLine());
@@ -188,7 +188,7 @@ public class Main {
                             lib.setNumerodepags(Integer.parseInt(scanner.nextLine()));
 
                         } else if (materialAModificar instanceof Revista) {
-                            Revista rev = (Revista) materialAModificar; // Casting a Revista
+                            Revista rev = (Revista) materialAModificar;
 
                             System.out.print("Nueva Editorial: ");
                             rev.setEditorial(scanner.nextLine());
@@ -197,8 +197,7 @@ public class Main {
                             rev.setPeriodicidad(scanner.nextLine());
 
                         } else if (materialAModificar instanceof DVD) {
-                            DVD dvd = (DVD) materialAModificar; // Casting a DVD
-
+                            DVD dvd = (DVD) materialAModificar;
                             System.out.print("Nuevo Director: ");
                             dvd.setDirector(scanner.nextLine());
 
@@ -206,7 +205,7 @@ public class Main {
                             dvd.setGenero(scanner.nextLine());
 
                         } else if (materialAModificar instanceof CDAudio) {
-                            CDAudio cd = (CDAudio) materialAModificar; // Casting a CDAudio
+                            CDAudio cd = (CDAudio) materialAModificar;
 
                             System.out.print("Nuevo Artista: ");
                             cd.setArtista(scanner.nextLine());
@@ -215,7 +214,7 @@ public class Main {
                             cd.setNumerodecanciones(Integer.parseInt(scanner.nextLine()));
                         }
 
-                        // Guardamos los cambios usando el método de la clase Gestion
+                        //  segun lo que me dijeron aqui lo que hace es Guardamos los cambios usando el método de la clase Gestion
                         gestion.modificarMaterial(codigoMod, materialAModificar);
                         System.out.println("¡Material modificado exitosamente!");
                     }
@@ -224,13 +223,13 @@ public class Main {
                 case '5':
                     System.out.println("\n--- BORRAR MATERIAL ---");
 
-                    // 1. Pedir el código del material
+                    //  Pedir el código del material
                     System.out.print("Ingrese el código del material a borrar: ");
                     String codigoBorrar = scanner.nextLine().trim();
 
-                    // 2. Llamar a gestion.borrarMaterial() y evaluar el resultado
+                    // Llamar a gestion.borrarMaterial() y evaluar el resultado
                     if (gestion.borrarMaterial(codigoBorrar)) {
-                        // 3. Si devolvió true, fue exitoso
+                        // Si devolvió true, fue exitoso
                         System.out.println("¡Material con código " + codigoBorrar + " borrado con éxito!");
                     } else {
                         // Si devolvió false, no existía
