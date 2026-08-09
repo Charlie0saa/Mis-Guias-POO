@@ -1,18 +1,16 @@
 package mediateca;
 
-public class Libro extends Formato {
+public class Libro extends MaterialEscrito {
 
     private String autor;
     private int Numerodepags;
-    private String editorial;
     private String isbn;
     private int Añodepublicacion;
 
     public Libro(String codigo, String titulo, String autor, int Numerodepags, String editorial, String isbn, int Añodepublicacion, int unidadesDisponibles) {
-        super(codigo, titulo, unidadesDisponibles);
+        super(codigo, titulo, unidadesDisponibles, editorial);
         setAutor(autor);
         setNumerodepags(Numerodepags);
-        setEditorial(editorial);
         setIsbn(isbn);
         setAñodepublicacion(Añodepublicacion);
     }
@@ -25,11 +23,6 @@ public class Libro extends Formato {
     public int getNumerodepags() { return Numerodepags; }
     public void setNumerodepags(int Numerodepags) {
         this.Numerodepags = (Numerodepags > 0) ? Numerodepags : 1;
-    }
-
-    public String getEditorial() { return editorial; }
-    public void setEditorial(String editorial) {
-        this.editorial = (editorial != null && !editorial.trim().isEmpty()) ? editorial : "Pendiente";
     }
 
     public String getIsbn() { return isbn; }

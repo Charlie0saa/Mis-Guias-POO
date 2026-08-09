@@ -1,21 +1,14 @@
 package mediateca;
 
-public class Revista extends Formato {
+public class Revista extends MaterialEscrito {
 
-    private String editorial;
     private String periodicidad;
     private String fechaPublicacion;
 
     public Revista(String codigo, String titulo, String editorial, String periodicidad, String fechaPublicacion, int unidadesDisponibles) {
-        super(codigo, titulo, unidadesDisponibles);
-        setEditorial(editorial);
+        super(codigo, titulo, unidadesDisponibles, editorial);
         setPeriodicidad(periodicidad);
         setFechaPublicacion(fechaPublicacion);
-    }
-
-    public String getEditorial() { return editorial; }
-    public void setEditorial(String editorial) {
-        this.editorial = (editorial != null && !editorial.trim().isEmpty()) ? editorial : "Pendiente";
     }
 
     public String getPeriodicidad() { return periodicidad; }

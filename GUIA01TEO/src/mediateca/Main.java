@@ -1,3 +1,10 @@
+//Integrantes:
+//Cesar Daniel Trejo Rodriguez carnet: TR262213
+//Edwin Fernando Amaya Navarro         “AN262051”
+//Marcos Ezequiel Ayala Palacios       “AP260351”
+//Carlos Josue Azucena Ayala           “AA260854”
+//Jorge Alberto Orellana Henriquez     “OH240812”
+
 package mediateca;
 
 import java.io.IOException;
@@ -10,7 +17,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         char opcion;
 
-        // Variables para llevar el control del correlativo auto-incrementable (5 dígitos)
         int correlativoLibro = 1;
         int correlativoRevista = 1;
         int correlativoDVD = 1;
@@ -35,8 +41,8 @@ public class Main {
                     if (gestion.listarMateriales().isEmpty()) {
                         System.out.println("No hay materiales registrados.");
                     } else {
-                        for (Formato f : gestion.listarMateriales()) {
-                            System.out.println(f.mostrarInfo());
+                        for (Material m : gestion.listarMateriales()) {
+                            System.out.println(m.mostrarInfo());
                         }
                     }
                     break;
@@ -46,7 +52,7 @@ public class Main {
                     System.out.print("Ingrese el código del material a buscar: ");
                     String codigoBusqueda = scanner.nextLine().trim();
 
-                    Formato materialEncontrado = gestion.buscarMaterial(codigoBusqueda);
+                    Material materialEncontrado = gestion.buscarMaterial(codigoBusqueda);
 
                     if (materialEncontrado != null) {
                         System.out.println("Material encontrado:");
@@ -65,7 +71,7 @@ public class Main {
                     System.out.print("Seleccione el tipo de material: ");
                     String tipo = scanner.nextLine().trim();
 
-                    Formato nuevoMaterial = null;
+                    Material nuevoMaterial = null;
 
                     switch (tipo) {
                         case "1": // LIBRO
@@ -151,30 +157,23 @@ public class Main {
                 case '4':
                     System.out.println("\n--- MODIFICAR MATERIAL ---");
 
-                    // segun lo que me dijeron aqui lo que hace es Pedir el código del material
                     System.out.print("Ingrese el código del material a modificar: ");
                     String codigoMod = scanner.nextLine().trim();
 
-                    //  segun lo que me dijeron aqui lo que hace es  Buscar el material y guardarlo
-                    Formato materialAModificar = gestion.buscarMaterial(codigoMod);
+                    Material materialAModificar = gestion.buscarMaterial(codigoMod);
 
-                    //  segun lo que me dijeron aqui lo que hace es  Validar si es null
                     if (materialAModificar == null) {
                         System.out.println("No se encontró ningún material con el código: " + codigoMod);
                     } else {
-                        //  segun lo que me dijeron aqui lo que hace es  Si existe, verificar el tipo con instanceof y pedir nuevos datos
                         System.out.println("Material encontrado: " + materialAModificar.getTitulo());
                         System.out.println("Ingrese los nuevos datos:");
-
 
                         System.out.print("Nuevo Título: ");
                         materialAModificar.setTitulo(scanner.nextLine());
 
-
                         System.out.print("Nuevas Unidades Disponibles: ");
                         materialAModificar.setTotaldeunidades(Integer.parseInt(scanner.nextLine()));
 
-                        //  segun lo que me dijeron aqui lo que hace es Verificamos el tipo específico para los atributos propios
                         if (materialAModificar instanceof Libro) {
                             Libro lib = (Libro) materialAModificar;
 
@@ -214,7 +213,6 @@ public class Main {
                             cd.setNumerodecanciones(Integer.parseInt(scanner.nextLine()));
                         }
 
-                        //  segun lo que me dijeron aqui lo que hace es Guardamos los cambios usando el método de la clase Gestion
                         gestion.modificarMaterial(codigoMod, materialAModificar);
                         System.out.println("¡Material modificado exitosamente!");
                     }
@@ -223,16 +221,12 @@ public class Main {
                 case '5':
                     System.out.println("\n--- BORRAR MATERIAL ---");
 
-                    //  Pedir el código del material
                     System.out.print("Ingrese el código del material a borrar: ");
                     String codigoBorrar = scanner.nextLine().trim();
 
-                    // Llamar a gestion.borrarMaterial() y evaluar el resultado
                     if (gestion.borrarMaterial(codigoBorrar)) {
-                        // Si devolvió true, fue exitoso
                         System.out.println("¡Material con código " + codigoBorrar + " borrado con éxito!");
                     } else {
-                        // Si devolvió false, no existía
                         System.out.println("No se encontró ningún material con el código: " + codigoBorrar);
                     }
                     break;

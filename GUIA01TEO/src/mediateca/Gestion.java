@@ -1,37 +1,41 @@
+//Integrantes:
+//Cesar Daniel Trejo Rodriguez carnet: TR262213
+//Edwin Fernando Amaya Navarro         “AN262051”
+//Marcos Ezequiel Ayala Palacios       “AP260351”
+//Carlos Josue Azucena Ayala           “AA260854”
+//Jorge Alberto Orellana Henriquez     “OH240812”
+
 package mediateca;
 
 import java.util.ArrayList;
 
 public class Gestion {
-    private ArrayList<Formato> materiales;
+    private ArrayList<Material> materiales;
 
     public Gestion() {
         materiales = new ArrayList<>();
     }
 
-    public ArrayList<Formato> listarMateriales() {
+    public ArrayList<Material> listarMateriales() {
         return materiales;
     }
 
-    public Formato buscarMaterial(String codigo) {
-        for (Formato f : materiales) {
-            if (f.getCodigo().equalsIgnoreCase(codigo)) {
-                return f;
+    public Material buscarMaterial(String codigo) {
+        for (Material m : materiales) {
+            if (m.getCodigo().equalsIgnoreCase(codigo)) {
+                return m;
             }
         }
         return null;
     }
 
-    public boolean agregarMaterial(Formato f) {
-
-        materiales.add(f);
+    public boolean agregarMaterial(Material m) {
+        materiales.add(m);
         return true;
     }
 
-    public boolean modificarMaterial(String codigo, Formato nuevo) {
-
+    public boolean modificarMaterial(String codigo, Material nuevo) {
         int posicion = materiales.indexOf(buscarMaterial(codigo));
-
 
         if (posicion != -1) {
             materiales.set(posicion, nuevo);
@@ -42,11 +46,10 @@ public class Gestion {
     }
 
     public boolean borrarMaterial(String codigo) {
-        Formato f = buscarMaterial(codigo);
+        Material m = buscarMaterial(codigo);
 
-
-        if (f != null) {
-            materiales.remove(f);
+        if (m != null) {
+            materiales.remove(m);
             return true;
         }
 

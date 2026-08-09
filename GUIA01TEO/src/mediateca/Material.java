@@ -1,12 +1,19 @@
+//Integrantes:
+//Cesar Daniel Trejo Rodriguez carnet: TR262213
+//Edwin Fernando Amaya Navarro         “AN262051”
+//Marcos Ezequiel Ayala Palacios       “AP260351”
+//Carlos Josue Azucena Ayala           “AA260854”
+//Jorge Alberto Orellana Henriquez     “OH240812”
+
 package mediateca;
 
-public abstract class Formato {
+public abstract class Material {
 
     protected String codigo;
     protected String titulo;
     protected int totaldeunidades;
 
-    public Formato(String codigo, String titulo, int totaldeunidades) {
+    public Material(String codigo, String titulo, int totaldeunidades) {
         setCodigo(codigo);
         setTitulo(titulo);
         setTotaldeunidades(totaldeunidades);
@@ -52,4 +59,3 @@ public abstract class Formato {
 
     public abstract String mostrarInfo();
 }
-
