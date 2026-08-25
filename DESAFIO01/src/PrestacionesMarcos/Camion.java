@@ -28,7 +28,7 @@ public class Camion extends Vehiculo {
 
     @Override
     public String mostrarInformacion() {
-        return "=== CAMIÓN ===" +
+        return "***** CAMIÓN *****" +
                 "\nPlaca: " + getPlaca() +
                 "\nMarca: " + getMarca() +
                 "\nModelo: " + getModelo() +

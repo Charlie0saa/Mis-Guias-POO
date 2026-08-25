@@ -7,12 +7,15 @@ import java.util.List;
 public class SistemaFlota {
 
     private static List<Vehiculo> listaVehiculos = new ArrayList<>();
+    private static final int ANIO_ACTUAL = 2026;
 
     public static void main(String[] args) {
         int opcion = 0;
 
         do {
-            String menu = "=== SISTEMA DE GESTIÓN DE FLOTA DE VEHÍCULOS ===\n\n" +
+            //menu de marcos para seleccionar los que se desea hacer
+            String menu = "********** SISTEMA DE MARCOSPRESTACIONES **********\n\n" +
+                    "Digite el numero correspondiente a la opcion del 1 - 6\n\n"+
                     "1. Registrar Vehículo\n" +
                     "2. Mostrar Todos los Vehículos\n" +
                     "3. Calcular Costo de Mantenimiento\n" +
@@ -20,6 +23,7 @@ public class SistemaFlota {
                     "5. Salir\n\n" +
                     "Seleccione una opción:";
 
+            //lo que se ejecuta al iniciar
             String entrada = JOptionPane.showInputDialog(null, menu, "Menú Principal", JOptionPane.QUESTION_MESSAGE);
 
             if (entrada == null) {
@@ -73,51 +77,59 @@ public class SistemaFlota {
             return;
         }
 
-        try {
-            String placa = JOptionPane.showInputDialog(null, "Ingrese la Placa:");
-            if (placa == null || placa.trim().isEmpty()) return;
+        //validaciones para cuidar que no se ingrese un valor que no existe
+        String placa = pedirTextoValido("Ingrese la Placa del vehículo:", "Placa");
+        if (placa == null) return; // Usuario canceló
 
-            String marca = JOptionPane.showInputDialog(null, "Ingrese la Marca:");
-            if (marca == null || marca.trim().isEmpty()) return;
+        String marca = pedirTextoValido("Ingrese la Marca del vehículo:", "Marca");
+        if (marca == null) return;
 
-            String modelo = JOptionPane.showInputDialog(null, "Ingrese el Modelo:");
-            if (modelo == null || modelo.trim().isEmpty()) return;
+        String modelo = pedirTextoValido("Ingrese el Modelo del vehículo:", "Modelo");
+        if (modelo == null) return;
 
-            int anio = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el Año de Fabricación:"));
+        Integer anio = pedirEnteroEnRango("Ingrese el Año de Fabricación:", "Año de Fabricación", 1900, ANIO_ACTUAL);
+        if (anio == null) return;
 
-            int respDisp = JOptionPane.showConfirmDialog(null, "¿Está disponible?", "Disponibilidad", JOptionPane.YES_NO_OPTION);
-            boolean disponible = (respDisp == JOptionPane.YES_OPTION);
+        int respDisp = JOptionPane.showConfirmDialog(null, "¿Está disponible el vehículo actualmente?", "Disponibilidad", JOptionPane.YES_NO_OPTION);
+        boolean disponible = (respDisp == JOptionPane.YES_OPTION);
 
-            switch (tipo) {
-                case 0: // Automóvil
-                    int pasajeros = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el número de pasajeros:"));
-                    int respSeguro = JOptionPane.showConfirmDialog(null, "¿Tiene seguro vigente?", "Seguro", JOptionPane.YES_NO_OPTION);
-                    boolean seguro = (respSeguro == JOptionPane.YES_OPTION);
+        // tipo de vehiculos aqui
+        switch (tipo) {
+            case 0: // Automóvil
+                Integer pasajeros = pedirEnteroEnRango("Ingrese el número de pasajeros (mínimo 1):", "Número de Pasajeros", 1, 100);
+                if (pasajeros == null) return;
 
-                    listaVehiculos.add(new Automovil(placa, marca, modelo, anio, disponible, pasajeros, seguro));
-                    JOptionPane.showMessageDialog(null, "Automóvil registrado con éxito.");
-                    break;
+                int respSeguro = JOptionPane.showConfirmDialog(null, "¿Tiene el seguro vigente?", "Seguro Vigente", JOptionPane.YES_NO_OPTION);
+                boolean seguro = (respSeguro == JOptionPane.YES_OPTION);
 
-                case 1: // Camión
-                    double capacidad = Double.parseDouble(JOptionPane.showInputDialog(null, "Ingrese la capacidad de carga (Toneladas):"));
-                    int ejes = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el número de ejes:"));
+                listaVehiculos.add(new Automovil(placa, marca, modelo, anio, disponible, pasajeros, seguro));
+                JOptionPane.showMessageDialog(null, "Automóvil registrado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                break;
 
-                    listaVehiculos.add(new Camion(placa, marca, modelo, anio, disponible, capacidad, ejes));
-                    JOptionPane.showMessageDialog(null, "Camión registrado con éxito.");
-                    break;
+            case 1: // Camión
+                Double capacidad = pedirDoublePositivo("Ingrese la capacidad de carga en toneladas (mayor a 0):", "Capacidad de Carga");
+                if (capacidad == null) return;
 
-                case 2: // Motocicleta
-                    int cilindrada = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la cilindrada (cc):"));
-                    int respReparto = JOptionPane.showConfirmDialog(null, "¿Está asignada a reparto urbano?", "Reparto Urbano", JOptionPane.YES_NO_OPTION);
-                    boolean reparto = (respReparto == JOptionPane.YES_OPTION);
+                Integer ejes = pedirEnteroEnRango("Ingrese el número de ejes (mínimo 1):", "Número de Ejes", 1, 20);
+                if (ejes == null) return;
 
-                    listaVehiculos.add(new Motocicleta(placa, marca, modelo, anio, disponible, cilindrada, reparto));
-                    JOptionPane.showMessageDialog(null, "Motocicleta registrada con éxito.");
-                    break;
-            }
 
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Error al ingresar valores numéricos. Registro cancelado.", "Error de Datos", JOptionPane.ERROR_MESSAGE);
+                //LISTA DE VEHICULOS
+                listaVehiculos.add(new Camion(placa, marca, modelo, anio, disponible, capacidad, ejes));
+                JOptionPane.showMessageDialog(null, "Camión registrado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                break;
+
+            case 2: // Motocicleta
+                Integer cilindrada = pedirEnteroEnRango("Ingrese la cilindrada:", "Cilindrada", 50, 3000);
+                if (cilindrada == null) return;
+
+                int respReparto = JOptionPane.showConfirmDialog(null, "¿Está asignada a reparto urbano?", "Reparto Urbano", JOptionPane.YES_NO_OPTION);
+                boolean reparto = (respReparto == JOptionPane.YES_OPTION);
+
+                //LISTA DE VEHICULOS
+                listaVehiculos.add(new Motocicleta(placa, marca, modelo, anio, disponible, cilindrada, reparto));
+                JOptionPane.showMessageDialog(null, "Motocicleta registrada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                break;
         }
     }
 
@@ -127,13 +139,13 @@ public class SistemaFlota {
             return;
         }
 
-        StringBuilder reporte = new StringBuilder("=== REGISTRO GENERAL DE VEHÍCULOS ===\n\n");
+        StringBuilder reporte = new StringBuilder("***** REGISTRO GENERAL DE VEHÍCULOS *****\n\n");
         for (Vehiculo v : listaVehiculos) {
             reporte.append(v.mostrarInformacion())
                     .append("\n-----------------------------------\n");
         }
 
-        JOptionPane.showMessageDialog(null, reporte.toString(), "Flota de Vehículos", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, reporte.toString(), "marcosprestaciones Flota de Vehículos", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void calcularMantenimiento() {
@@ -142,8 +154,8 @@ public class SistemaFlota {
             return;
         }
 
-        String placaBuscada = JOptionPane.showInputDialog(null, "Ingrese la placa del vehículo a consultar:");
-        if (placaBuscada == null || placaBuscada.trim().isEmpty()) return;
+        String placaBuscada = pedirTextoValido("Ingrese la placa del vehículo a consultar:", "Calcular Mantenimiento");
+        if (placaBuscada == null) return;
 
         Vehiculo encontrado = buscarVehiculoPorPlaca(placaBuscada);
 
@@ -164,8 +176,8 @@ public class SistemaFlota {
             return;
         }
 
-        String placaBuscada = JOptionPane.showInputDialog(null, "Ingrese la placa del vehículo a consultar:");
-        if (placaBuscada == null || placaBuscada.trim().isEmpty()) return;
+        String placaBuscada = pedirTextoValido("Ingrese la placa del vehículo a consultar:", "Consultar Disponibilidad");
+        if (placaBuscada == null) return;
 
         Vehiculo encontrado = buscarVehiculoPorPlaca(placaBuscada);
 
@@ -183,5 +195,50 @@ public class SistemaFlota {
             }
         }
         return null;
+    }
+    ///
+    private static String pedirTextoValido(String mensaje, String titulo) {
+        while (true) {
+            String input = JOptionPane.showInputDialog(null, mensaje, titulo, JOptionPane.QUESTION_MESSAGE);
+            if (input == null) return null; // Usuario hizo clic en Cancelar
+            if (!input.trim().isEmpty()) {
+                return input.trim();
+            }
+            JOptionPane.showMessageDialog(null, "El campo no puede estar vacío. Por favor intente nuevamente.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private static Integer pedirEnteroEnRango(String mensaje, String titulo, int min, int max) {
+        while (true) {
+            String input = JOptionPane.showInputDialog(null, mensaje, titulo, JOptionPane.QUESTION_MESSAGE);
+            if (input == null) return null; // Usuario hizo clic en Cancelar
+            try {
+                int valor = Integer.parseInt(input.trim());
+                if (valor >= min && valor <= max) {
+                    return valor;
+                } else {
+                    JOptionPane.showMessageDialog(null, "El valor debe estar entre " + min + " y " + max + ".", "Error de Rango", JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Debe ingresar un número entero válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private static Double pedirDoublePositivo(String mensaje, String titulo) {
+        while (true) {
+            String input = JOptionPane.showInputDialog(null, mensaje, titulo, JOptionPane.QUESTION_MESSAGE);
+            if (input == null) return null; // Usuario hizo clic en Cancelar
+            try {
+                double valor = Double.parseDouble(input.trim());
+                if (valor > 0) {
+                    return valor;
+                } else {
+                    JOptionPane.showMessageDialog(null, "El valor debe ser mayor a 0.", "Error de Rango", JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Debe ingresar un número decimal válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 }

@@ -28,7 +28,7 @@ public class Automovil extends Vehiculo {
 
     @Override
     public String mostrarInformacion() {
-        return "=== AUTOMÓVIL ===" +
+        return "***** AUTOMÓVIL *****" +
                 "\nPlaca: " + getPlaca() +
                 "\nMarca: " + getMarca() +
                 "\nModelo: " + getModelo() +
